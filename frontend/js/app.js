@@ -238,8 +238,11 @@ function renderTasks(tasks) {
             <div class="task-content">
                 <span class="task-title ${task.is_completed ? 'completed' : ''}">${escapeHTML(task.title)}</span>
             </div>
-            <div class="task-actions">
-                <button class="btn-icon delete-btn" data-id="${task.id}">
+            <div class="task-actions" style="display: flex; gap: 0.25rem;">
+                <button class="btn-icon edit-btn" data-id="${task.id}" title="Edit Task">
+                    <i data-lucide="edit-2"></i>
+                </button>
+                <button class="btn-icon delete-btn" data-id="${task.id}" title="Delete Task">
                     <i data-lucide="trash-2"></i>
                 </button>
             </div>
@@ -250,6 +253,87 @@ function renderTasks(tasks) {
 
         const deleteBtn = li.querySelector('.delete-btn');
         deleteBtn.addEventListener('click', () => showModal(task.id));
+
+        const editBtn = li.querySelector('.edit-btn');
+        const titleSpan = li.querySelector('.task-title');
+        
+        editBtn.addEventListener('click', () => {
+            if (li.classList.contains('editing')) {
+                // If clicked again while editing, trigger blur which saves
+                const input = li.querySelector('.edit-task-input');
+                if (input) input.blur();
+                return;
+            }
+            
+            li.classList.add('editing');
+            const currentText = titleSpan.textContent;
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'edit-task-input';
+            input.value = currentText;
+            input.style.width = '100%';
+            input.style.padding = '0.5rem';
+            input.style.borderRadius = '0.5rem';
+            input.style.border = '1px solid var(--primary)';
+            input.style.outline = 'none';
+            input.style.fontSize = '1.125rem';
+            
+            titleSpan.replaceWith(input);
+            input.focus();
+            
+            editBtn.innerHTML = '<i data-lucide="check"></i>';
+            editBtn.style.color = 'var(--success)';
+            refreshIcons();
+            
+            let isSaving = false;
+            
+            const saveEdit = async () => {
+                if (isSaving) return;
+                isSaving = true;
+                
+                const newTitle = input.value.trim();
+                li.classList.remove('editing');
+                
+                if (newTitle && newTitle !== currentText) {
+                    input.replaceWith(titleSpan);
+                    titleSpan.textContent = newTitle;
+                    try {
+                        const response = await fetch(`${API_URL}/tasks/${task.id}`, {
+                            method: 'PUT',
+                            headers: { 
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({ title: newTitle })
+                        });
+                        if (!response.ok) throw new Error('Failed to update task');
+                        showToast('Task updated');
+                    } catch (err) {
+                        showToast(err.message, 'error');
+                        titleSpan.textContent = currentText; // Rollback
+                    }
+                } else {
+                    input.replaceWith(titleSpan);
+                }
+                
+                editBtn.innerHTML = '<i data-lucide="edit-2"></i>';
+                editBtn.style.color = ''; // Reset color
+                refreshIcons();
+            };
+
+            input.addEventListener('blur', saveEdit);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    input.blur(); // Trigger save
+                }
+                if (e.key === 'Escape') {
+                    input.value = currentText;
+                    input.blur(); // Revert
+                }
+            });
+        });
 
         taskList.appendChild(li);
     });

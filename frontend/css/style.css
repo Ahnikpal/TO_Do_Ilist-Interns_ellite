@@ -184,7 +184,7 @@ body {
     align-items: center;
 }
 
-.input-wrapper i {
+.input-wrapper i, .input-wrapper svg {
     position: absolute;
     left: 1rem;
     color: var(--text-muted);
@@ -307,11 +307,11 @@ input:focus, select:focus {
 .task-controls { display: flex; gap: 0.75rem; }
 
 .search-box { position: relative; }
-.search-box i { position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; width: 1.1rem; height: 1.1rem; }
+.search-box i, .search-box svg { position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; width: 1.1rem; height: 1.1rem; }
 .search-box input { padding-left: 2.75rem; width: 240px; height: 2.75rem; background: #fff; }
 
 .select-wrapper { position: relative; }
-.select-wrapper i { position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; width: 1.1rem; height: 1.1rem; }
+.select-wrapper i, .select-wrapper svg { position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; width: 1.1rem; height: 1.1rem; }
 .select-wrapper select { padding-left: 2.75rem; height: 2.75rem; cursor: pointer; background: #fff; }
 
 #add-task-form {
@@ -393,6 +393,10 @@ input:focus, select:focus {
 
 .delete-btn { color: #94a3b8; }
 .delete-btn:hover { color: var(--danger) !important; background: #fef2f2 !important; }
+
+.edit-btn { color: #94a3b8; }
+.edit-btn:hover { color: var(--primary) !important; background: #eef2ff !important; }
+
 
 /* Empty State */
 #empty-state { text-align: center; padding: 5rem 2rem; background: white; border-radius: 2rem; border: 2px dashed var(--border); margin-top: 2rem; }
