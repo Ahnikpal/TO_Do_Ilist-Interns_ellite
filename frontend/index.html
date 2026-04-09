@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster | Manage Your Day</title>
+    <link rel="stylesheet" href="css/style.css?v=2.1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Toast Container -->
+        <div id="toast-container"></div>
+
+        <!-- Custom Modal -->
+        <div id="modal-overlay" class="hidden">
+            <div class="modal">
+                <div class="modal-icon">
+                    <i data-lucide="alert-triangle"></i>
+                </div>
+                <h3 id="modal-title">Are you sure?</h3>
+                <p id="modal-message">This action cannot be undone.</p>
+                <div class="modal-actions">
+                    <button id="modal-cancel" class="btn-outline">Cancel</button>
+                    <button id="modal-confirm" class="btn-primary btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auth Section -->
+        <section id="auth-section" class="hidden">
+            <div class="auth-card">
+                <div class="auth-icon">
+                    <i data-lucide="shield-check"></i>
+                </div>
+                <h1 id="auth-title">Welcome Back</h1>
+                <p id="auth-subtitle">Please enter your details to continue</p>
+                
+                <form id="auth-form">
+                    <div class="form-group" id="name-group">
+                        <label for="name">Full Name</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="user"></i>
+                            <input type="text" id="name" placeholder="John Doe">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="mail"></i>
+                            <input type="email" id="email" placeholder="name@example.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="lock"></i>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <button type="submit" id="auth-submit" class="btn-primary">Sign In</button>
+                </form>
+
+                <div class="auth-footer">
+                    <span id="toggle-text">Don't have an account?</span>
+                    <a href="#" id="auth-toggle">Sign Up</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Dashboard -->
+        <section id="dashboard-section" class="hidden">
+            <header class="navbar">
+                <div class="logo">
+                    <i data-lucide="check-circle-2"></i>
+                    Task<span>Master</span>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar" id="user-initials" aria-hidden="true">U</div>
+                    <span id="user-display-name">User</span>
+                    <button id="logout-btn" class="btn-icon" title="Logout" aria-label="Logout">
+                        <i data-lucide="log-out"></i>
+                    </button>
+                </div>
+            </header>
+
+            <main class="container">
+                <div class="task-header">
+                    <div class="title-group">
+                        <h1 id="main-heading">Your Tasks</h1>
+                        <p class="subtitle" id="task-count" aria-live="polite">0 tasks remaining</p>
+                    </div>
+                    <div class="task-controls">
+                        <div class="search-box">
+                            <i data-lucide="search" aria-hidden="true"></i>
+                            <input type="text" id="task-search" placeholder="Search tasks..." aria-label="Search tasks">
+                        </div>
+                        <div class="select-wrapper">
+                            <i data-lucide="filter" aria-hidden="true"></i>
+                            <select id="task-sort" aria-label="Sort tasks">
+                                <option value="created_at">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="add-task-form" aria-labelledby="main-heading">
+                    <input type="text" id="new-task-title" placeholder="What needs to be done?" required aria-label="New task title">
+                    <button type="submit" class="btn-add" aria-label="Add task">
+                        <i data-lucide="plus"></i>
+                    </button>
+                </form>
+
+                <div id="loading" class="hidden">
+                    <div class="spinner"></div>
+                    <p>Fetching tasks...</p>
+                </div>
+
+                <div id="error-container" class="error-msg hidden"></div>
+
+                <ul id="task-list" class="task-list">
+                    <!-- Tasks will be injected here -->
+                </ul>
+
+                <div id="empty-state" class="hidden">
+                    <div class="empty-icon">
+                        <i data-lucide="clipboard-list"></i>
+                    </div>
+                    <h2>No tasks found</h2>
+                    <p>Start your day by adding a new task above.</p>
+                </div>
+            </main>
+        </section>
+    </div>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
